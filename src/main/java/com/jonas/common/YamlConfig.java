@@ -11,12 +11,11 @@ import lombok.Data;
  */
 @Data
 public class YamlConfig {
-    private MongoConfig mongo;
+    private MongodbConfig mongodb;
 
     @Data
-    public static class MongoConfig {
-        private String ip;
-        private Integer port;
+    public static class MongodbConfig {
         private String database;
+        private String address;
     }
 }

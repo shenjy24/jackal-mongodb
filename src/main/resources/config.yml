@@ -1,4 +1,4 @@
-mongo:
-  ip: 127.0.0.1
-  port: 27000
+mongodb:
   database: jackal
+  address: mongodb://127.0.0.1:27000,127.0.0.1:27001,127.0.0.1:27002/jackal?replicaSet=rs
+

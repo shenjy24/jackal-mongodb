@@ -4,6 +4,7 @@ import com.jonas.common.YamlConfig;
 import com.jonas.util.GsonUtils;
 import com.jonas.util.YamlParser;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -28,8 +29,9 @@ public class DataManager {
 
     static {
         YamlConfig yamlConfig = YamlParser.toBean("config.yml", YamlConfig.class);
-        mongoClient = new MongoClient(yamlConfig.getMongo().getIp(), yamlConfig.getMongo().getPort());
-        mongoDatabase = mongoClient.getDatabase(yamlConfig.getMongo().getDatabase());
+        MongoClientURI connectionString = new MongoClientURI(yamlConfig.getMongodb().getAddress());
+        mongoClient = new MongoClient(connectionString);
+        mongoDatabase = mongoClient.getDatabase(yamlConfig.getMongodb().getDatabase());
     }
 
     public static MongoCollection<Document> getCollection(String collection) {

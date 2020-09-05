@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -26,7 +27,8 @@ public class AppTest {
 
     @Test
     public void testUpset() {
-        gameManager.upset(buildGame("228ae8fb-75ae-4558-a92f-ea795e8d7363"));
+        String gameId = UUID.randomUUID().toString();
+        gameManager.upset(buildGame(gameId));
     }
 
     @Test
