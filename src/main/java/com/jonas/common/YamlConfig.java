@@ -15,7 +15,6 @@ public class YamlConfig {
 
     @Data
     public static class MongodbConfig {
-        private String database;
-        private String address;
+        private String clientUri;
     }
 }

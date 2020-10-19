@@ -5,6 +5,7 @@ import com.jonas.data.GameManager;
 import com.jonas.data.bean.Player;
 import com.jonas.data.bean.Team;
 import com.jonas.util.RandomUtils;
+import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,9 +27,13 @@ public class AppTest {
     }
 
     @Test
+    @SneakyThrows
     public void testUpset() {
-        String gameId = UUID.randomUUID().toString();
-        gameManager.upset(buildGame(gameId));
+        while (true) {
+            String gameId = UUID.randomUUID().toString();
+            gameManager.upset(buildGame(gameId));
+            Thread.sleep(1000);
+        }
     }
 
     @Test

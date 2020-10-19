@@ -29,9 +29,9 @@ public class DataManager {
 
     static {
         YamlConfig yamlConfig = YamlParser.toBean("config.yml", YamlConfig.class);
-        MongoClientURI connectionString = new MongoClientURI(yamlConfig.getMongodb().getAddress());
-        mongoClient = new MongoClient(connectionString);
-        mongoDatabase = mongoClient.getDatabase(yamlConfig.getMongodb().getDatabase());
+        MongoClientURI clientURI = new MongoClientURI(yamlConfig.getMongodb().getClientUri());
+        mongoClient = new MongoClient(clientURI);
+        mongoDatabase = mongoClient.getDatabase(clientURI.getDatabase());
     }
 
     public static MongoCollection<Document> getCollection(String collection) {
