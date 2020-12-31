@@ -1,7 +1,9 @@
 package com.jonas.data.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -13,7 +15,8 @@ import java.util.UUID;
  * @date 2020-09-05
  */
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Player {
     private String playerId;
     private String playerName;

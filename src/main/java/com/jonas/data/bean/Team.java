@@ -15,7 +15,8 @@ import java.util.List;
  * @since 2019-09-26
  */
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Team {
     private String name;
     private boolean win;

@@ -1,8 +1,10 @@
 package com.jonas.data;
 
 import com.jonas.data.bean.Team;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.ArrayList;
@@ -17,7 +19,8 @@ import java.util.UUID;
  * @since 2019-09-26
  */
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Game {
 
     public static final String COLLECTION = "game";

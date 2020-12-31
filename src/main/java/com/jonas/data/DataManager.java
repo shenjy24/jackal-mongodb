@@ -1,7 +1,7 @@
 package com.jonas.data;
 
 import com.jonas.common.YamlConfig;
-import com.jonas.util.GsonUtils;
+import com.jonas.util.JacksonUtils;
 import com.jonas.util.YamlParser;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -45,7 +45,7 @@ public class DataManager {
 
         List<T> list = new ArrayList<>();
         for (Document document : documents) {
-            list.add(GsonUtils.toBean(document.toJson(settings), clz));
+            list.add(JacksonUtils.toBean(document.toJson(settings), clz));
         }
         return list;
     }

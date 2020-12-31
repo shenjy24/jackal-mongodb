@@ -1,15 +1,16 @@
 package com.jonas.data;
 
-import com.jonas.util.GsonUtils;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.*;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.Sorts;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 
 /**
@@ -29,41 +30,38 @@ public class GameManager {
     }
 
     public void insert(Game game) {
-        collection.insertOne(Document.parse(GsonUtils.toJson(game)));
+        MongoTemplate.insertOne(collection, game);
     }
 
     public void insert(List<Game> games) {
-        List<Document> documents = new ArrayList<>();
-        for (Game game : games) {
-            documents.add(Document.parse(GsonUtils.toJson(game)));
-        }
-        collection.insertMany(documents);
+        MongoTemplate.insertMany(collection, games);
     }
 
     public void update(String gameId, String gameType) {
-        collection.updateMany(Filters.eq("gameId", gameId),
-                Updates.combine(Updates.set("gameType", gameType), Updates.currentDate("lastModified")));
+        Map<String, Object> args = new HashMap<>();
+        args.put("gameType", gameType);
+        args.put("endTime", System.currentTimeMillis());
+        MongoTemplate.update(collection, Filters.eq("gameId", gameId), args);
     }
 
     public void upset(Game game) {
         Bson filter = Filters.eq("gameId", game.getGameId());
-        Document document = Document.parse(GsonUtils.toJson(game));
-        collection.replaceOne(filter, document, new ReplaceOptions().upsert(true));
+        MongoTemplate.upset(collection, filter, game);
     }
 
     public List<Game> find() {
         FindIterable<Document> documents = collection.find();
-        return DataManager.convert(documents, Game.class);
+        return MongoTemplate.serialize(Game.class, documents);
     }
 
-    public List<Game> find(String gameId) {
-        FindIterable<Document> documents = collection.find(Filters.eq("gameId", gameId));
-        return DataManager.convert(documents, Game.class);
+    public Game findOne(String gameId) {
+        Bson bson = Filters.eq("gameId", gameId);
+        return MongoTemplate.findOne(collection, bson, Game.class);
     }
 
     public List<Game> findByPlayer(String playerId) {
-        FindIterable<Document> documents = collection.find(Filters.eq("teams.players.playerId", playerId));
-        return DataManager.convert(documents, Game.class);
+        Bson bson = Filters.eq("teams.players.playerId", playerId);
+        return MongoTemplate.findAll(collection, bson, Game.class);
     }
 
     /**
@@ -77,6 +75,6 @@ public class GameManager {
     public List<Game> queryByPlayer(String playerId, long lastTime, int pageSize) {
         Bson filter = Filters.and(Filters.eq("teams.players.playerId", playerId), Filters.lt("endTime", lastTime));
         FindIterable<Document> documents = collection.find(filter).sort(Sorts.descending("endTime")).limit(pageSize);
-        return DataManager.convert(documents, Game.class);
+        return MongoTemplate.serialize(Game.class, documents);
     }
 }
